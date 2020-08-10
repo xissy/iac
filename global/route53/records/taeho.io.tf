@@ -42,8 +42,8 @@ resource "aws_route53_record" "api-taeho-io-A" {
   name    = "api.taeho.io"
   type    = "A"
   alias {
-    name                   = "d-hlws06mzr6.execute-api.ap-northeast-2.amazonaws.com"
-    zone_id                = "Z20JF4UZKIW1U8"
+    name                   = data.terraform_remote_state.customdomainnames.outputs.api-taeho-io-regional-domain-name
+    zone_id                = data.terraform_remote_state.customdomainnames.outputs.api-taeho-io-regional-zone-id
     evaluate_target_health = true
   }
 }
