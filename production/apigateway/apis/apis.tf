@@ -54,7 +54,7 @@ resource "aws_apigatewayv2_integration" "api-taeho-io-taeho" {
 
 resource "aws_apigatewayv2_route" "api-taeho-io-root" {
   api_id    = aws_apigatewayv2_api.api-taeho-io.id
-  route_key = "ANY /"
+  route_key = "ANY /{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.api-taeho-io-taeho.id}"
 }
 
