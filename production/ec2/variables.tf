@@ -30,3 +30,8 @@ locals {
     subnet = data.terraform_remote_state.vpc.outputs.bastion_host_subnet
   }
 }
+
+variable "home_cidr" {
+  type    = string
+  default = "211.177.118.6/32"
+}

@@ -16,7 +16,7 @@ resource "aws_security_group" "bastion" {
 
   ingress {
     cidr_blocks = [
-      "211.177.118.6/32",
+      var.home_cidr,
     ]
     from_port        = 22
     ipv6_cidr_blocks = []
@@ -45,7 +45,8 @@ resource "aws_instance" "bastion" {
   availability_zone = local.bastion_host.az
   subnet_id         = local.bastion_host.subnet
   key_name          = var.keypair
-  security_groups = [
+
+  vpc_security_group_ids = [
     aws_security_group.bastion.id,
   ]
 
