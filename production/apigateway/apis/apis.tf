@@ -44,10 +44,10 @@ resource "aws_apigatewayv2_integration" "api-taeho-io-taeho" {
   api_id                 = aws_apigatewayv2_api.api-taeho-io.id
   connection_type        = "INTERNET"
   integration_type       = "AWS_PROXY"
-  integration_method     = "POST"
+  integration_method     = "ANY"
   integration_uri        = data.terraform_remote_state.lambda.outputs.lambda-function-taeho-arn
   passthrough_behavior   = "WHEN_NO_MATCH"
-  payload_format_version = "2.0"
+  payload_format_version = "1.0"
   request_templates      = {}
   timeout_milliseconds   = 29000
 }
@@ -62,10 +62,10 @@ resource "aws_apigatewayv2_integration" "api-taeho-io-myip" {
   api_id                 = aws_apigatewayv2_api.api-taeho-io.id
   connection_type        = "INTERNET"
   integration_type       = "AWS_PROXY"
-  integration_method     = "POST"
+  integration_method     = "ANY"
   integration_uri        = data.terraform_remote_state.lambda.outputs.lambda-function-myip-arn
   passthrough_behavior   = "WHEN_NO_MATCH"
-  payload_format_version = "2.0"
+  payload_format_version = "1.0"
   request_templates      = {}
   timeout_milliseconds   = 29000
 }
