@@ -42,6 +42,50 @@ resource "aws_iam_role_policy" "ec2-network-interface" {
   )
 }
 
+resource "aws_iam_role_policy" "cloudwatch-log" {
+  name = "cloudwatch-log"
+  role = aws_iam_role.lambda-function-role.id
+  policy = jsonencode(
+    {
+      "Statement" : [
+        {
+          Effect : "Allow",
+          Resource : "*",
+          Action : [
+            "xray:PutTraceSegments",
+            "xray:PutTelemetryRecords",
+            "xray:GetSamplingRules",
+            "xray:GetSamplingTargets",
+            "xray:GetSamplingStatisticSummaries",
+          ]
+        }
+      ]
+      "Version" : "2012-10-17",
+    }
+  )
+}
+
+resource "aws_iam_role_policy" "xray" {
+  name = "xray"
+  role = aws_iam_role.lambda-function-role.id
+  policy = jsonencode(
+    {
+      "Statement" : [
+        {
+          Effect : "Allow",
+          Resource : "*",
+          Action : [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+          ]
+        }
+      ]
+      "Version" : "2012-10-17",
+    }
+  )
+}
+
 resource "aws_security_group" "lambda-function-public-api" {
   name        = "lambda-function-public-api"
   description = "lambda function public api"
@@ -86,6 +130,10 @@ resource "aws_lambda_function" "myip" {
       aws_security_group.lambda-function-public-api.id
     ]
   }
+
+  tracing_config {
+    mode = "Active"
+  }
 }
 
 resource "aws_lambda_function" "taeho" {
@@ -102,5 +150,9 @@ resource "aws_lambda_function" "taeho" {
     security_group_ids = [
       aws_security_group.lambda-function-public-api.id
     ]
+  }
+
+  tracing_config {
+    mode = "Active"
   }
 }
